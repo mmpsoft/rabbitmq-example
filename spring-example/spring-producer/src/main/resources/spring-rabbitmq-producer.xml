@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/rabbit
+        https://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+    <!-- rabbitmq.properties 配置 -->
+    <context:property-placeholder location="classpath:rabbitmq.properties"/>
+
+    <!-- 定义 Connection Factory -->
+    <rabbit:connection-factory id="rabbitmqConnectionFactory" host="${rabbitmq.host}"
+                               port="${rabbitmq.port}"
+                               username="${rabbitmq.username}"
+                               password="${rabbitmq.password}"
+                               virtual-host="${rabbitmq.virtual-host}"/>
+    <!-- 定义 RabbitMQTemplate -->
+    <rabbit:template id="rabbitmqTemplate" connection-factory="rabbitmqConnectionFactory"/>
+
+    <!-- 定义管理交换机，队列的 -->
+    <rabbit:admin connection-factory="rabbitmqConnectionFactory"/>
+
+    <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!--
+        定义 Queue
+        name: 队列名称，如果不存在该队列，会自动创建该队列
+        auto-declare: 是否持久化
+        没有指定exchange，因此是默认值，即 ""，默认的 exchange 类型为 direct,
+        此时 routingKey 为 Queue 名称
+    -->
+    <rabbit:queue id="springSimpleQueue" name="spring.simple.queue" auto-declare="true"/>
+    <!-- //////////////////////////////////////////////////////////////////////////////// -->
+
+    <!-- 定义广播类型的 Queue -->
+    <rabbit:queue id="springFanoutQueue1" name="spring.fanout.queue1" auto-declare="true"/>
+    <rabbit:queue id="springFanoutQueue2" name="spring.fanout.queue2" auto-declare="true"/>
+
+    <!-- 定义广播类型的交换机，并绑定两个队列 -->
+    <rabbit:fanout-exchange id="springFanoutExchange" name="spring.fanout.exchange" auto-declare="true">
+        <rabbit:bindings>
+            <rabbit:binding queue="springFanoutQueue1"/>
+            <rabbit:binding queue="springFanoutQueue2"/>
+        </rabbit:bindings>
+    </rabbit:fanout-exchange>
+
+    <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!-- 定义定向类型的 Queue -->
+    <rabbit:queue id="springDirectQueue1" name="spring.direct.queue1" auto-declare="true"/>
+    <rabbit:queue id="springDirectQueue2" name="spring.direct.queue2" auto-declare="true"/>
+
+    <!-- 定义定向类型的交换机，并绑定两个队列 -->
+    <rabbit:direct-exchange id="springDirectExchange" name="spring.direct.exchange" auto-declare="true">
+        <rabbit:bindings>
+            <!-- key 表示 routingKey -->
+            <rabbit:binding key="info" queue="springDirectQueue1"/>
+            <rabbit:binding key="warn" queue="springDirectQueue2"/>
+            <rabbit:binding key="error" queue="springDirectQueue2"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!-- 定义Topic类型的 Queue -->
+    <rabbit:queue id="springTopicQueue1" name="spring.topic.queue1" auto-declare="true"/>
+    <rabbit:queue id="springTopicQueue2" name="spring.topic.queue2" auto-declare="true"/>
+
+    <!-- 定义Topic类型的交换机，并绑定两个队列 -->
+    <rabbit:topic-exchange id="springTopicExchange" name="spring.topic.exchange" auto-declare="true">
+        <rabbit:bindings>
+            <rabbit:binding pattern="*.orange.*" queue="springTopicQueue1"/>
+            <rabbit:binding pattern="*.*.rabbit" queue="springTopicQueue2"/>
+            <rabbit:binding pattern="Lazy.#" queue="springTopicQueue2"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+</beans>
