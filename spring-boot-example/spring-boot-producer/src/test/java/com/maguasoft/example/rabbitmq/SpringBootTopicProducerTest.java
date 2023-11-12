@@ -1,18 +1,20 @@
 package com.maguasoft.example.rabbitmq;
 
+import com.maguasoft.example.rabbitmq.producer.SpringBootFanoutProducer;
+import com.maguasoft.example.rabbitmq.producer.SpringBootTopicProducer;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class SimpleProducerTest {
+public class SpringBootTopicProducerTest {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private SpringBootTopicProducer producer;
 
     @Test
-    public void testSimpleSendMessage() {
-        rabbitTemplate.convertAndSend("springboot.queue", "Hello RabbitMQ!");
+    public void sendMessage() {
+        producer.sendMessage();
     }
 }

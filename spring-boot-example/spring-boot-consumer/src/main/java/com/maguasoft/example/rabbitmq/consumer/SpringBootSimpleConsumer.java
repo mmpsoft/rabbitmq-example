@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SimpleConsumer {
+public class SpringBootSimpleConsumer {
 
-    @RabbitListener(queues = "springboot.queue")
+    @RabbitListener(queues = "springboot.simple.queue")
     public void onMessage(String message) {
-        log.info("SimpleConsumer onMessage: {}", message);
+        log.info("SpringBootSimpleConsumer onMessage: {}", message);
     }
 }
