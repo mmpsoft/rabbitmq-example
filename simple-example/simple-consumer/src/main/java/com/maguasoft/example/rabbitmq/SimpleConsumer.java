@@ -23,7 +23,7 @@ public class SimpleConsumer {
               接收消息
               queue: 队列名称
               autoAck: 是否自动确认
-              callback: 回调处理的函数
+              callback: 回调处理的函数，有 DefaultConsumer 实现类
              */
             channel.basicConsume("simple.queue", true, new DefaultConsumer(channel) {
                 /**
