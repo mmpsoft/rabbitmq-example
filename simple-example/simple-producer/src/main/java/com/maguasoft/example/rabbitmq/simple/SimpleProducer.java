@@ -1,4 +1,4 @@
-package com.maguasoft.example.rabbitmq;
+package com.maguasoft.example.rabbitmq.simple;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -21,8 +21,7 @@ public class SimpleProducer {
 
         // 创建 Connection
         // 创建 Channel
-        try (Connection connection = connectionFactory.newConnection();
-             Channel channel = connection.createChannel()) {
+        try (Connection connection = connectionFactory.newConnection(); Channel channel = connection.createChannel()) {
             /*
               创建 Queue
               queue: 队列名称

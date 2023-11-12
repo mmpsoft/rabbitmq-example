@@ -1,4 +1,4 @@
-package com.maguasoft.example.rabbitmq;
+package com.maguasoft.example.rabbitmq.workqueues;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -21,8 +21,7 @@ public class WorkQueuesProducer {
 
         // 创建 Connection
         // 创建 Channel
-        try (Connection connection = connectionFactory.newConnection();
-             Channel channel = connection.createChannel()) {
+        try (Connection connection = connectionFactory.newConnection(); Channel channel = connection.createChannel()) {
             /*
               创建 Queue
               queue: 队列名称
@@ -43,7 +42,12 @@ public class WorkQueuesProducer {
               props: 参数
               body: 消息的内容
              */
-            channel.basicPublish("", "workqueues.queue", null, "Hello Simple mode of RabbitMQ".getBytes(StandardCharsets.UTF_8));
+
+            // 因为有多个消费者，为了测试方便，for 循环生产消息
+            for (int index = 1; index <= 100; index++) {
+                channel.basicPublish("", "workqueues.queue", null,
+                        ("Hello Simple mode of RabbitMQ-" + index).getBytes(StandardCharsets.UTF_8));
+            }
         } catch (Exception e) {
             log.error("Cause by: ", e);
         }
