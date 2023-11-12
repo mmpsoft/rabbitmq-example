@@ -11,8 +11,6 @@ public class SpringFanoutProducer {
     private RabbitTemplate rabbitTemplate;
 
     public void sendMessage() {
-        for (int index = 0; index < 50; index++) {
-            rabbitTemplate.convertAndSend("spring.fanout.exchange", "", "Hello Spring Fanout RabbitMQ-" + index);
-        }
+        rabbitTemplate.convertAndSend("spring.fanout.exchange", "", "Hello Spring Fanout RabbitMQ");
     }
 }
