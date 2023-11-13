@@ -91,4 +91,20 @@
             <rabbit:binding pattern="Lazy.#" queue="springTopicQueue2"/>
         </rabbit:bindings>
     </rabbit:topic-exchange>
+
+    <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!-- 定义 TTL Queue -->
+    <rabbit:queue id="springTTLQueue" name="spring.ttl.queue" auto-declare="true">
+        <rabbit:queue-arguments>
+            <!-- 设置队列里的消息过期时间，单位为ms，通过 x-message-ttl 的 Arguments 设置过期时间 -->
+            <entry key="x-message-ttl" value="60000" value-type="java.lang.Integer"/>
+        </rabbit:queue-arguments>
+    </rabbit:queue>
+
+    <!-- 定义Topic类型的交换机，并绑定两个队列 -->
+    <rabbit:topic-exchange id="springTTLExchange" name="spring.ttl.exchange" auto-declare="true">
+        <rabbit:bindings>
+            <rabbit:binding pattern="spring.ttl.#" queue="springTTLQueue"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
 </beans>
