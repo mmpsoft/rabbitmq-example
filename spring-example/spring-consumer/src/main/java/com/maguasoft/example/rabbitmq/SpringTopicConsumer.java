@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SpringTopicListener {
+public class SpringTopicConsumer {
 
     @RabbitListener(queues = "spring.topic.queue1")
     public void onSpringTopicQueue1Message(String message) {

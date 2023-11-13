@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SpringFanoutListener {
+public class SpringFanoutConsumer {
 
     @RabbitListener(queues = "spring.fanout.queue1")
     public void onSpringFanoutQueue1Message(String message) {

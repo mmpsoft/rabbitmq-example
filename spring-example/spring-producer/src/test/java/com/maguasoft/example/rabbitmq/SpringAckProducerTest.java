@@ -30,4 +30,13 @@ public class SpringAckProducerTest {
         // 等待回调处理完成
         Thread.sleep(1000);
     }
+
+    @Test
+    public void testAckSuccessed() throws InterruptedException {
+        // 为测试 ReturnCallback，可以设置一个不存在的 routingKey 触发 ReturnCallback 回调
+        producer.sendMessage("spring.ack.exchange", "info");
+
+        // 等待回调处理完成
+        Thread.sleep(1000);
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SpringDirectListener {
+public class SpringDirectConsumer {
 
     @RabbitListener(queues = "spring.direct.queue1")
     public void onSpringDirectQueue1Message(String message) {
