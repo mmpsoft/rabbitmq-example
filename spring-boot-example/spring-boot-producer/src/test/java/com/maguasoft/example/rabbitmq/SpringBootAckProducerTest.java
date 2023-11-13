@@ -27,4 +27,11 @@ public class SpringBootAckProducerTest {
         // 等待回调处理完成
         Thread.sleep(1000);
     }
+
+    @Test
+    public void testAckSuccessed() throws InterruptedException {
+        producer.sendMessage("springboot.ack.exchange", "info");
+        // 等待回调处理完成
+        Thread.sleep(1000);
+    }
 }

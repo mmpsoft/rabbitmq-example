@@ -27,7 +27,7 @@ public class SpringBootAckProducer {
         rabbitTemplate.setReturnsCallback(returned -> log.info("ReturnsCallback: {}", returned));
 
         // 发送消息
-        rabbitTemplate.convertAndSend(exchange, routingKey, "Hello Spring Direct RabbitMQ-info");
+        rabbitTemplate.convertAndSend(exchange, routingKey, "Hello Spring Ack RabbitMQ-info");
 
         // 使用同步 Ack 处理
         // Boolean isAcked = rabbitTemplate.invoke(op -> {
