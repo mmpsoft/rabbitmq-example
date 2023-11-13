@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-public class RabbitMQAckCallback {
+public class RabbitMQAckProducer {
 
     public void sendMessage() {
         // 创建连接工厂
