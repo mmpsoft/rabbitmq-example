@@ -14,13 +14,14 @@
 
     <!--
         定义 Connection Factory
-        publisher-returns="true" 表示开启确认模式，SpringBoot 2.3.0 版本中不在使用该属性，可以使用 confirm-type 代替
+        publisher-confirms="true" 表示开启确认模式，SpringBoot 2.3.0 版本中不在使用该属性，可以使用 confirm-type 代替
         使用下面的配置方式代替，有三种类型：none(默认), simple, correlated
             a. NONE：表示禁用发布确认模式，默认值。使用此模式之后，不管消息有没有发送到 Broker 都不会触发ConfirmCallback 回调。
             b. SIMPLE：表示消息成功到达 Broker 后，需要同步等待 Broker 的 Ack。使用方法waitForConfirms(ms)或waitForConfirmsOrDie(ms)等待，
                 这个方法会阻塞等待到 Broker 的消息确认。如果在规定时间内没有确认，就会报错。属于同步确认模式。
                 注意：waitForConfirmsOrDie方法如果返回false则会关闭channel信道，则接下来无法发送消息到Broker。
             c. CORRELATED：表示消息成功到达 Broker 后，触发ConfirmCalllBack回调。属于异步处理模式。
+        publisher-returns="true" 表示开启 returnCallback 模式
     -->
     <rabbit:connection-factory id="rabbitmqConnectionFactory" host="${rabbitmq.host}"
                                port="${rabbitmq.port}"
@@ -30,6 +31,10 @@
                                confirm-type="CORRELATED"
                                publisher-returns="true"/>
     <!-- 定义 RabbitMQTemplate -->
+    <!--
+        发送消息时设置强制标志, 仅当提供了 returnCallback 时才适用。
+        也可以使用 rabbitTemplate.setMandatory(true) 设置
+    -->
     <rabbit:template id="rabbitmqTemplate" mandatory="true" connection-factory="rabbitmqConnectionFactory"/>
 
     <!-- 定义管理交换机，队列的 -->
