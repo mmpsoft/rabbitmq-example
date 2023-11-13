@@ -1,4 +1,4 @@
-package com.maguasoft.example.rabbitmq;
+package com.maguasoft.example.rabbitmq.ttl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;
