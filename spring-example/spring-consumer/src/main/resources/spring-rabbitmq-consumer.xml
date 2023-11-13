@@ -18,15 +18,17 @@
                                port="${rabbitmq.port}"
                                username="${rabbitmq.username}"
                                password="${rabbitmq.password}"
-                               virtual-host="${rabbitmq.virtual-host}"/>
+                               virtual-host="${rabbitmq.virtual-host}" />
 
 
     <!-- 定义 Simple 的 Container Factory -->
     <bean id="rabbitListenerContainerFactory"
           class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
         <property name="connectionFactory" ref="rabbitmqConnectionFactory"/>
+        <!-- Container属性配置，请查看 https://docs.spring.io/spring-amqp/docs/2.4.17/reference/html/#containerAttributes -->
         <property name="concurrentConsumers" value="3"/>
         <property name="maxConcurrentConsumers" value="10"/>
+        <property name="prefetchCount" value="1"/>
     </bean>
 
     <rabbit:annotation-driven container-factory="rabbitListenerContainerFactory"/>
