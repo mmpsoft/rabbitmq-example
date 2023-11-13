@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
-public class RabbitMQAckConsumer {
+public class AckConsumer {
 
     public void onMessage() throws Exception {
         // 创建连接工厂
@@ -18,15 +18,15 @@ public class RabbitMQAckConsumer {
         connectionFactory.setPassword("test"); // 密码
 
         // 创建 Connection
-        // 创建 Channel
         Connection connection = connectionFactory.newConnection();
+        // 创建 Channel
         Channel channel = connection.createChannel();
-            /*
-              接收消息
-              queue: 队列名称
-              autoAck: 是否自动确认
-              callback: 回调处理的函数，有 DefaultConsumer 实现类
-             */
+        /*
+          接收消息
+          queue: 队列名称
+          autoAck: 是否自动确认
+          callback: 回调处理的函数，有 DefaultConsumer 实现类
+         */
         channel.basicConsume("ack.queue", true, new DefaultConsumer(channel) {
             /**
              * @param consumerTag 消息的标识
