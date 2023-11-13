@@ -107,4 +107,35 @@
             <rabbit:binding pattern="spring.ttl.#" queue="springTTLQueue"/>
         </rabbit:bindings>
     </rabbit:topic-exchange>
+
+    <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!-- 定义 DLX Queue -->
+    <rabbit:queue id="springDLXQueue" name="spring.dlx.queue" auto-declare="true"/>
+
+    <!-- 定义 Topic 类型的死信交换机，并绑定一个队列 -->
+    <rabbit:topic-exchange id="springDLXExchange" name="spring.dlx.exchange" auto-declare="true">
+        <rabbit:bindings>
+            <rabbit:binding pattern="spring.dlx.#" queue="springDLXQueue"/>
+        </rabbit:bindings>
+    </rabbit:topic-exchange>
+
+    <!-- 定义普通的 Queue -->
+    <rabbit:queue id="springGeneralQueue" name="spring.general.queue" auto-declare="true">
+        <rabbit:queue-arguments>
+            <!-- 定义关联的死信队列 -->
+            <entry key="x-dead-letter-exchange" value="spring.dlx.exchange"/>
+            <entry key="x-dead-letter-routing-key" value="spring.dlx.info"/>
+
+            <!-- 下面两个为了测试死信队列添加的参数 -->
+            <entry key="x-max-length" value="5" value-type="java.lang.Integer"/>
+            <entry key="x-message-ttl" value="30000" value-type="java.lang.Integer"/>
+        </rabbit:queue-arguments>
+    </rabbit:queue>
+
+    <!-- 定义 Topic 类型的交换机，并绑定一个队列 -->
+    <rabbit:direct-exchange id="springGeneralExchange" name="spring.general.exchange" auto-declare="true">
+        <rabbit:bindings>
+            <rabbit:binding key="general.info" queue="springGeneralQueue"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
 </beans>
