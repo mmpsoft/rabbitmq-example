@@ -7,8 +7,14 @@
 ```bash
 docker build -t rabbitmq-cluster:3.8.1 .
 ```
-2、执行 docker-compose 命令
+2、执行`docker-compose`命令
 
 ```bash
 docker-compose up -d
+```
+
+3、查看启动情况
+
+```bash
+docker-compose ps
 ```
